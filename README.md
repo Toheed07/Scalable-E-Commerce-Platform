@@ -71,46 +71,12 @@ graph TD
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ecommerce-backend.git
-cd ecommerce-backend
+git clone https://github.com/Toheed07/Scalable-E-Commerce-Platform.git
+cd Scalable-E-Commerce-Platform
 ```
 
-2. Create environment files:
-```bash
-# Create .env files for each service
-cp .env.example services/user/.env
-cp .env.example services/product/.env
-cp .env.example services/cart/.env
-cp .env.example services/order/.env
-cp .env.example services/payment/.env
-cp .env.example services/notification/.env
-```
+2. Create and Configure environment files for each service.
 
-3. Configure environment variables:
-
-Required variables for each service:
-
-```plaintext
-# User Service (.env)
-MONGODB_URI=mongodb://mongodb:27017/users
-JWT_SECRET=your_jwt_secret
-
-# Product Service (.env)
-MONGODB_URI=mongodb://mongodb:27017/products
-
-# Payment Service (.env)
-STRIPE_SECRET_KEY=your_stripe_secret_key
-MONGODB_URI=mongodb://mongodb:27017/payment
-
-# Notification Service (.env)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your_email@gmail.com
-SMTP_PASS=your_app_specific_password
-TWILIO_ACCOUNT_SID=your_twilio_sid
-TWILIO_AUTH_TOKEN=your_twilio_token
-TWILIO_PHONE_NUMBER=your_twilio_number
-```
 
 ### Running the Application
 
@@ -129,12 +95,12 @@ docker compose up -d
 | Service | Internal Port | External Port | Endpoint |
 |---------|--------------|---------------|-----------|
 | API Gateway | 80 | 8080 | http://localhost:8080 |
-| User Service | 4000 | - | /v1/api/users/* |
-| Product Service | 4001 | - | /v1/api/products/* |
-| Cart Service | 4002 | - | /v1/api/cart/* |
-| Payment Service | 4003 | - | /v1/api/payments/* |
-| Order Service | 4004 | - | /v1/api/orders/* |
-| Notification Service | 4005 | - | /v1/api/notification/* |
+| User Service | 4000 | 4000 | /v1/api/users/* |
+| Product Service | 4001 | 4001 | /v1/api/products/* |
+| Cart Service | 4002 | 4002 | /v1/api/cart/* |
+| Payment Service | 4003 | 4003 | /v1/api/payments/* |
+| Order Service | 4004 | 4004 | /v1/api/orders/* |
+| Notification Service | 4005 | 4005 | /v1/api/notification/* |
 | Grafana | 3000 | 3000 | http://localhost:3000 |
 | Kibana | 5601 | 5601 | http://localhost:5601 |
 
@@ -151,11 +117,7 @@ docker compose up -d
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a pull request
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
 
 ## Future Plans
 
