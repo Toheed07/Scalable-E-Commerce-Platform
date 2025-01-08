@@ -5,6 +5,9 @@ A scalable e-commerce platform built with microservices architecture. The platfo
 ## Architecture Overview
 
 ```mermaid
+---
+title: E-commerce Microservices Architecture
+---
 graph TD
     Client --> Gateway[API Gateway/Nginx]
     Gateway --> UserService[User Service]
