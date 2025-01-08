@@ -18,5 +18,8 @@
     "mongoose": "^8.9.3",
     "nodemon": "^3.1.9",
     "stripe": "^17.5.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
