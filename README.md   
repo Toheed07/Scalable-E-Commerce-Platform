@@ -1,76 +1,161 @@
-# [Scalable E-commerce Backend (Microservices)](https://roadmap.sh/projects/scalable-ecommerce-platform)
+# Scalable E-commerce Backend (Microservices)
+
+A scalable e-commerce platform built with microservices architecture. The platform provides comprehensive e-commerce functionality including user management, product catalog, shopping cart, order processing, payments, and notifications.
+
+## Architecture Overview
+
+```mermaid
+graph TD
+    Client --> Gateway[API Gateway/Nginx]
+    Gateway --> UserService[User Service]
+    Gateway --> ProductService[Product Service]
+    Gateway --> CartService[Shopping Cart Service]
+    Gateway --> OrderService[Order Service]
+    Gateway --> PaymentService[Payment Service]
+    Gateway --> NotificationService[Notification Service]
+    
+    PaymentService --> Stripe[Stripe API]
+    NotificationService --> Email[NodeMailer]
+    NotificationService --> SMS[Twilio]
+    
+    Monitoring[Prometheus/Grafana] --> Gateway
+    Logging[ELK Stack] --> Gateway
+```
+
+## Features
+
+### Core Services
+- **User Service**: Authentication, authorization, profile management
+- **Product Service**: Catalog management, inventory, search
+- **Shopping Cart Service**: Cart management, session handling
+- **Order Service**: Order processing, status tracking
+- **Payment Service**: Secure payment processing via Stripe
+- **Notification Service**: Email/SMS notifications via NodeMailer/Twilio
+
+### Infrastructure
+- **API Gateway**: Request routing and load balancing
+- **Monitoring**: Real-time metrics and alerting
+- **Logging**: Centralized logging with full-text search
+- **Containerization**: Docker-based deployment
+- **CI/CD**: Automated testing and deployment
 
 ## Tech Stack
 
-- Node.js
-- Express.js
-- MongoDB
-- Docker
-- Nginx
-- Stripe
-- Prometheus
-- Grafana
-- Elasticsearch
-- Kibana
+### Backend
+- Node.js/Express.js
+- MongoDB with Mongoose ODM
+- JWT for authentication
+- bcrypt for password hashing
 
-## Services & Features
+### Infrastructure
+- Docker & Docker Compose
+- Nginx (API Gateway/Load Balancer)
+- Stripe API
 
-- [x] User Service: Manages user registration, login, and profile management. Includes user authentication, token-based authorization (JWT), and secure password handling.
-- [x] Product Service: Handles product listings, categories, inventory management, and product search functionality. Supports product CRUD operations and maintains product data consistency.
-- [x] Shopping Cart Service: Manages users' shopping carts, including adding/removing items, updating quantities, and calculating total costs. Features support for handling cart persistence across sessions.
-- [x] Order Service: Processes and tracks orders, including placing new orders, updating order statuses (e.g., pending, shipped, delivered), and managing order history. Integrates with the payment service to handle payments.
-- [x] Payment Service: Handles payment processing through the integration of the Stripe payment gateway. Supports various payment methods such as credit/debit cards, wallets, and provides secure transaction processing.
-- [x] Notification Service: Sends email and SMS notifications for events like order confirmations, shipping updates, and promotions. Utilizes NodeMailer for email notifications and Twilio for SMS delivery.
-- [x] API Gateway: Provides a centralized entry point for all microservices, managing routing, and load balancing. Ensures that all API calls are directed to the appropriate microservice.
-- [x] Prometheus Monitoring: Integrated Prometheus service for collecting and scraping metrics from all microservices. Tracks metrics like request rate, error rate, and response time.
-- [x] Grafana Dashboards: Visualizes data from Prometheus in real-time with customizable dashboards. Provides insights into system health, traffic patterns, and performance metrics.
-- [x] Centralized Logging with ELK Stack: Uses Elasticsearch for storing logs and Kibana for querying and visualizing logs from all services. Logs critical information for debugging, performance monitoring, and auditing.
-- [x] Dockerized Services: All microservices and monitoring tools (Prometheus, Grafana, Elasticsearch, Kibana) are containerized using Docker and orchestrated with Docker Compose for easy deployment and scaling.
+### Monitoring & Logging
+- Prometheus & Grafana
+- ELK Stack (Elasticsearch, Logstash, Kibana)
 
-## Architecture
+## Getting Started
 
-- **Microservices Architecture**: The project follows a microservices architecture where each service operates as a separate codebase with its own database, promoting scalability, flexibility, and maintainability.
-- **API Gateway & Load Balancing**: The project uses `Nginx` as an API Gateway, which routes incoming requests to the appropriate microservice. Nginx also serves as a load balancer, distributing traffic evenly across multiple instances of services to ensure reliability and fault tolerance.
-- **Containerization**: All services are containerized using `Docker`. This enables easy deployment, scalability, and isolation of services, ensuring consistency across development, staging, and production environments.
-- **Deployment**: While Kubernetes is not used, the services are deployed using Docker Compose, which manages multi-container environments. This allows for efficient orchestration of services and the monitoring stack, facilitating easy scaling and management.
-- **CI/CD Pipeline**: The continuous integration and deployment (CI/CD) process is automated using `GitHub Actions`. This pipeline builds, tests, and deploys the services automatically, streamlining the release cycle and ensuring smooth deployments.
-- **Database**: Each microservice interacts with `MongoDB`, a NoSQL database, known for its flexibility and scalability. `Mongoose` is used as the Object Document Mapper (ODM) for simplifying database interactions with MongoDB.
-- **Authentication & Authorization**: User authentication and authorization are handled using `JWT (JSON Web Tokens)`. Passwords are securely hashed using `bcryptjs`, ensuring robust protection against data breaches.
+### Prerequisites
+- Docker Engine 24.0+
+- Docker Compose 2.20+
+- Node.js 18+ (for local development)
+- MongoDB 6.0+ (for local development)
 
+### Environment Setup
 
-## Pre-requisites
-
-- Docker & Docker Compose should be installed.
-
-  ```bash
-  docker --version
-  docker compose version
-  ```
-
-**Environment Configuration**: Create and update the `.env` files for each service with the necessary values, such as database connections, API keys, and any service-specific configurations.
-
-## How to run the project using docker
-
-**Services**:
+1. Clone the repository:
 ```bash
-docker compose up --build
+git clone https://github.com/yourusername/ecommerce-backend.git
+cd ecommerce-backend
 ```
-**Monitoring**:
+
+2. Create environment files:
 ```bash
+# Create .env files for each service
+cp .env.example services/user/.env
+cp .env.example services/product/.env
+cp .env.example services/cart/.env
+cp .env.example services/order/.env
+cp .env.example services/payment/.env
+cp .env.example services/notification/.env
+```
+
+3. Configure environment variables:
+
+Required variables for each service:
+
+```plaintext
+# User Service (.env)
+MONGODB_URI=mongodb://mongodb:27017/users
+JWT_SECRET=your_jwt_secret
+
+# Product Service (.env)
+MONGODB_URI=mongodb://mongodb:27017/products
+
+# Payment Service (.env)
+STRIPE_SECRET_KEY=your_stripe_secret_key
+MONGODB_URI=mongodb://mongodb:27017/payment
+
+# Notification Service (.env)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_specific_password
+TWILIO_ACCOUNT_SID=your_twilio_sid
+TWILIO_AUTH_TOKEN=your_twilio_token
+TWILIO_PHONE_NUMBER=your_twilio_number
+```
+
+### Running the Application
+
+#### Docker Deployment
+```bash
+# Start core services
+docker compose up -d
+
+# Start monitoring stack
 cd monitoring
-docker compose up --build
+docker compose up -d
 ```
 
-Here `--build` is used to build the image again if there are any changes in the code.
+### Service Endpoints
 
----
+| Service | Internal Port | External Port | Endpoint |
+|---------|--------------|---------------|-----------|
+| API Gateway | 80 | 8080 | http://localhost:8080 |
+| User Service | 4000 | - | /v1/api/users/* |
+| Product Service | 4001 | - | /v1/api/products/* |
+| Cart Service | 4002 | - | /v1/api/cart/* |
+| Payment Service | 4003 | - | /v1/api/payments/* |
+| Order Service | 4004 | - | /v1/api/orders/* |
+| Notification Service | 4005 | - | /v1/api/notification/* |
+| Grafana | 3000 | 3000 | http://localhost:3000 |
+| Kibana | 5601 | 5601 | http://localhost:5601 |
+
+## Monitoring & Observability
+
+### Grafana Dashboards
+- Access: http://localhost:3000
+- Default credentials: admin/admin
+
+### Logging (ELK Stack)
+- Kibana: http://localhost:5601
+
 
 
 ## Contributing
-Contributions are welcome! Please fork the repository and create a pull request with your changes.
 
----
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a pull request
 
 ## Future Plans
-- Integrate Kubernetes
-- Implement a more robust monitoring
+
+- Kubernetes deployment support
+- Message queue integration
+- Enhanced analytics
