@@ -1,0 +1,150 @@
+version: '3.9'
+
+services:
+  user-service:
+    image: user-service:latest
+    build:
+      context: ./user-service
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URI=${MONGO_URI_USERS}
+      - JWT_SECRET=${JWT_SECRET}
+    networks:
+      - ecommerce-network
+    depends_on:
+      - mongo-user-service
+
+  product-service:
+    image: product-service:latest
+    build:
+      context: ./product-catalog-service
+    ports:
+      - "4001:4001"
+    environment:
+      - DATABASE_URI=${MONGO_URI_PRODUCTS}
+    networks:
+      - ecommerce-network
+    depends_on:
+      - mongo-product-service
+
+  cart-service:
+    image: cart-service:latest
+    build:
+      context: ./shopping-cart-service
+    ports:
+      - "4002:4002"
+    environment:
+      - DATABASE_URI=${MONGO_URI_CART}
+    networks:
+      - ecommerce-network
+    depends_on:
+      - mongo-cart-service
+
+  order-service:
+    image: order-service:latest
+    build:
+      context: ./order-service
+    ports:
+      - "4004:4004"
+    environment:
+      - DATABASE_URI=${MONGO_URI_ORDER}
+    networks:
+      - ecommerce-network
+    depends_on:
+      - mongo-order-service
+
+  payment-service:
+    image: payment-service:latest
+    build:
+      context: ./payment-service
+    ports:
+      - "4003:4003"
+    environment:
+      - DATABASE_URI=${MONGO_URI_PAYMENT}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+    networks:
+      - ecommerce-network
+
+  notification-service:
+    image: notification-service:latest
+    build:
+      context: ./notification-service
+    ports:
+      - 4005:4005
+    environment:
+      - NODEMAILER_EMAIL=${NODEMAILER_EMAIL}
+      - NODEMAILER_PASSWORD=${NODEMAILER_PASSWORD}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+    networks:
+      - ecommerce-network 
+
+  nginx:
+    image: api-gateway:latest
+    build:
+      context: ./api-gateway
+    ports:
+      - "80:80"
+    depends_on:
+      - user-service
+      - product-service
+      - cart-service
+      - order-service
+      - payment-service
+    networks:
+      - ecommerce-network
+
+  mongo-user-service:
+    image: mongo:latest
+    container_name: mongo-user-service
+    ports:
+      - "27017:27017"
+    networks:
+      - ecommerce-network
+    volumes:
+      - mongo-user-data:/data/db
+
+  mongo-product-service:
+    image: mongo:latest
+    container_name: mongo-product-service
+    networks:
+      - ecommerce-network
+    volumes:
+      - mongo-product-data:/data/db
+
+  mongo-cart-service:
+    image: mongo:latest
+    container_name: mongo-cart-service
+    networks:
+      - ecommerce-network
+    volumes:
+      - mongo-cart-data:/data/db
+
+  mongo-order-service:
+    image: mongo:latest
+    container_name: mongo-order-service
+    networks:
+      - ecommerce-network
+    volumes:
+      - mongo-order-data:/data/db
+  
+  mongo-payment-service:
+    image: mongo:latest
+    container_name: mongo-payment-service
+    networks:
+      - ecommerce-network
+    volumes:
+      - mongo-payment-data:/data/db
+
+networks:
+  ecommerce-network:
+    driver: bridge
+
+volumes:
+  mongo-user-data:
+  mongo-product-data:
+  mongo-cart-data:
+  mongo-order-data:
+  mongo-payment-data:
