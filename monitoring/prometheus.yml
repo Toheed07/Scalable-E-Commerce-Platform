@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "docker"
+    static_configs:
+      - targets:
+          - "localhost:4000"
+          - "localhost:4001"
+          - "localhost:4002"
+          - "localhost:4003"
+          - "localhost:4004"
+          - "localhost:4005"

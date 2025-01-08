@@ -1,0 +1,76 @@
+# ⭐️ [Scalable E-commerce Backend (Microservices)](https://roadmap.sh/projects/scalable-ecommerce-platform)
+
+## Tech Stack
+
+- Node.js
+- Express.js
+- MongoDB
+- Docker
+- Nginx
+- Stripe
+- Prometheus
+- Grafana
+- Elasticsearch
+- Kibana
+
+## Services & Features
+
+- [x] User Service: Manages user registration, login, and profile management. Includes user authentication, token-based authorization (JWT), and secure password handling.
+- [x] Product Service: Handles product listings, categories, inventory management, and product search functionality. Supports product CRUD operations and maintains product data consistency.
+- [x] Shopping Cart Service: Manages users' shopping carts, including adding/removing items, updating quantities, and calculating total costs. Features support for handling cart persistence across sessions.
+- [x] Order Service: Processes and tracks orders, including placing new orders, updating order statuses (e.g., pending, shipped, delivered), and managing order history. Integrates with the payment service to handle payments.
+- [x] Payment Service: Handles payment processing through the integration of the Stripe payment gateway. Supports various payment methods such as credit/debit cards, wallets, and provides secure transaction processing.
+- [x] Notification Service: Sends email and SMS notifications for events like order confirmations, shipping updates, and promotions. Utilizes NodeMailer for email notifications and Twilio for SMS delivery.
+- [x] API Gateway: Provides a centralized entry point for all microservices, managing routing, and load balancing. Ensures that all API calls are directed to the appropriate microservice.
+- [x] Prometheus Monitoring: Integrated Prometheus service for collecting and scraping metrics from all microservices. Tracks metrics like request rate, error rate, and response time.
+- [x] Grafana Dashboards: Visualizes data from Prometheus in real-time with customizable dashboards. Provides insights into system health, traffic patterns, and performance metrics.
+- [x] Centralized Logging with ELK Stack: Uses Elasticsearch for storing logs and Kibana for querying and visualizing logs from all services. Logs critical information for debugging, performance monitoring, and auditing.
+- [x] Dockerized Services: All microservices and monitoring tools (Prometheus, Grafana, Elasticsearch, Kibana) are containerized using Docker and orchestrated with Docker Compose for easy deployment and scaling.
+
+## Architecture
+
+- **Microservices Architecture**: The project follows a microservices architecture where each service operates as a separate codebase with its own database, promoting scalability, flexibility, and maintainability.
+- **API Gateway & Load Balancing**: The project uses `Nginx` as an API Gateway, which routes incoming requests to the appropriate microservice. Nginx also serves as a load balancer, distributing traffic evenly across multiple instances of services to ensure reliability and fault tolerance.
+- **Containerization**: All services are containerized using `Docker`. This enables easy deployment, scalability, and isolation of services, ensuring consistency across development, staging, and production environments.
+- **Deployment**: While Kubernetes is not used, the services are deployed using Docker Compose, which manages multi-container environments. This allows for efficient orchestration of services and the monitoring stack, facilitating easy scaling and management.
+- **CI/CD Pipeline**: The continuous integration and deployment (CI/CD) process is automated using `GitHub Actions`. This pipeline builds, tests, and deploys the services automatically, streamlining the release cycle and ensuring smooth deployments.
+- **Database**: Each microservice interacts with `MongoDB`, a NoSQL database, known for its flexibility and scalability. `Mongoose` is used as the Object Document Mapper (ODM) for simplifying database interactions with MongoDB.
+- **Authentication & Authorization**: User authentication and authorization are handled using `JWT (JSON Web Tokens)`. Passwords are securely hashed using `bcryptjs`, ensuring robust protection against data breaches.
+
+
+## Pre-requisites
+
+- Docker & Docker Compose should be installed.
+
+  ```bash
+  docker --version
+  docker compose version
+  ```
+
+**Environment Configuration**: Create and update the `.env` files for each service with the necessary values, such as database connections, API keys, and any service-specific configurations.
+
+## How to run the project using docker
+
+**Services**:
+```bash
+docker compose up --build
+```
+**Monitoring**:
+```bash
+cd monitoring
+docker compose up --build
+```
+
+Here `--build` is used to build the image again if there are any changes in the code.
+
+---
+
+
+## Contributing
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
+
+---
+
+## Future Plans
+- Integrate Kubernetes
+- Implement a more robust monitoring

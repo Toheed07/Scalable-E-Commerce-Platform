@@ -141,6 +141,8 @@ services:
 networks:
   ecommerce-network:
     driver: bridge
+  shared-network:
+    external: true
 
 volumes:
   mongo-user-data:
