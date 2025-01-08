@@ -2,6 +2,8 @@
 
 A scalable e-commerce platform built with microservices architecture. The platform provides comprehensive e-commerce functionality including user management, product catalog, shopping cart, order processing, payments, and notifications.
 
+Project Link : https://roadmap.sh/projects/scalable-ecommerce-platform
+
 ## Architecture Overview
 
 ```mermaid
